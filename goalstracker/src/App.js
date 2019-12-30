@@ -6,7 +6,7 @@ import NewUser from './components/NewUser';
 import Home from './components/Home';
 
 function App () {
-	return (
+    	return (
 			<div className='App'>
 				<Route exact path='/' component={Welcome} />
 				<Route exact path='/home' component={Home} />
