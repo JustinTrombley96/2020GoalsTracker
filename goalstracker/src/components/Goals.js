@@ -43,7 +43,7 @@ function Main() {
     }
     const completeGoal = index => {
         const newGoals = [...goals]
-        newGoals[index].isCompleted = true;
+        newGoals[index].isCompleted = !newGoals[index].isCompleted;
         setGoals(newGoals)
     }
     const removeGoal = index => {
