@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const Goals = styled.div`
-    background: green;
-    width: 80%;
-    margin: 0 auto;
+	background: black;
+	width: 80%;
+	margin: 0 auto;
+`;
+const Container = styled.div`background: grey;`;
+const GoalText = styled.h3`color: #3268a8;`;
+const GoalStart = styled.h5`color: #3268a8;`;
+const GoalEnd = styled.h5`color: #3268a8;`;
 
-`  
-const Container = styled.div`
-    background: grey;
-`
 
 const Goal = ({ goal, index, completeGoal, removeGoal }) => {
 	return (
 		<Goals className='goal' style={{ textDecoration: goal.isCompleted ? 'line-through' : '' }}>
-			<h3>{goal.text}</h3>
-			Start Date: {goal.startDate}
-			<br />
-			End Date:{goal.endDate} <br />
+			<GoalText>{goal.text}</GoalText>
+			<GoalStart>Start Date: {goal.startDate}</GoalStart>
+            <GoalEnd>End Date:{goal.endDate} </GoalEnd> 
 			<div>
 				<button onClick={() => completeGoal(index)}>Complete</button>
 				<button onClick={() => removeGoal(index)}>x</button>
@@ -32,7 +32,7 @@ const GoalForm = ({ addGoal }) => {
 	] = useState({ text: '', person: '', startDate: '', endDate: '' });
 
 	const handleSubmit = e => {
-        console.log(value)
+		console.log(value);
 		e.preventDefault();
 		if (!value) return;
 		addGoal(value);
@@ -41,17 +41,25 @@ const GoalForm = ({ addGoal }) => {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<label> Goal:
-				<input type='text' name ='text' value={value.text} onChange={e => setValue(e.target.value)} />
+			<label>
+				{' '}
+				Goal:
+				<input type='text' name='text' value={value.text} onChange={e => setValue(e.target.value)} />
 			</label>
-            <label> Justin
-				<input type='radio' name ='person' value={value.person} onChange={e => setValue(e.target.value)} />
+			<label>
+				{' '}
+				Justin
+				<input type='radio' name='person' value={value.person} onChange={e => setValue(e.target.value)} />
 			</label>
-            <label> My
-				<input type='radio' name ='person' value={value.person} onChange={e => setValue(e.target.value)} />
+			<label>
+				{' '}
+				My
+				<input type='radio' name='person' value={value.person} onChange={e => setValue(e.target.value)} />
 			</label>
-            <label> End Date:
-				<input type='date' name ='endDate' value={value.endDate} onChange={e => setValue(e.target.value)} />
+			<label>
+				{' '}
+				End Date:
+				<input type='date' name='endDate' value={value.endDate} onChange={e => setValue(e.target.value)} />
 			</label>
 		</form>
 	);
@@ -68,7 +76,7 @@ function Main () {
 			startDate   : Date(Date.now()),
 			endDate     : '12/31/19',
 		},
-	]);
+    ]);
 	const addGoal = text => {
 		const newGoals = [
 			...goals,
@@ -101,5 +109,31 @@ function Main () {
 		</Container>
 	);
 }
+
+function useLocalStorage(key, initialValue) {
+
+    const [storedValue, setStoredValue] = useState(() => {
+      try {
+        const item = window.localStorage.getItem(key);
+        return item ? JSON.parse(item) : initialValue;
+      } catch (error) {
+        console.log(error);
+        return initialValue;
+      }
+    });
+
+    const setValue = value => {
+      try {
+        const valueToStore =
+          value instanceof Function ? value(storedValue) : value;
+        setStoredValue(valueToStore);
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    return [storedValue, setValue];
+  }
 
 export default Main;
